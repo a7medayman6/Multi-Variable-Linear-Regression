@@ -25,6 +25,7 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
 
 file_name = "model.pickle"
 #comment untile print (best_score) after finding the best score you want, so you don't have to train the model each run  
+
 """
 training_times = 10000
 best_score = 0
@@ -52,7 +53,9 @@ for _ in range(training_times):
     #print("Score\t", score)
 
 print("Best Score\t", best_score, '\n')
+
 """
+
 #read the best model into the model variable from the file
 pickle_reader = open(file_name, 'rb')
 model = pickle.load(pickle_reader)
@@ -61,13 +64,15 @@ model = pickle.load(pickle_reader)
 #rounding the prediction to the nearest whole number.
 predictions = np.rint(model.predict(x_test))
 
+"""
 #printing the predictions against the real results
 print("X\t\t\t Y\tPrediction")
 i = 0
 for pred in predictions:
     print (x_test[i], '\t', y_test[i], '\t', pred)
     i+=1
-
+"""
+print(x_test)
 
 
 #PLOTING
@@ -80,4 +85,37 @@ y_graph = 'G3' # the predicted value
 plt.scatter(data[x_graph], data[y_graph])
 plt.xlabel(x_graph)
 plt.ylabel("Predicted Grade")
-plt.show()
+#plt.show()
+
+#students = pd.DataFrame(columns=["age", "health", "freetime", "studytime", "absences", "G1", "G2"])
+students = np.empty(7)
+number_of_students = int(input("Enter the number of students you want to predict for:\t"))
+for i in range(number_of_students):
+    age = int(input("Enter Student " + str(i + 1) + " age:\t")) 
+    health = int(input("Enter Student " + str(i + 1) + " health:\t"))
+    freetime = int(input("Enter Student " + str(i + 1) + " freetime:\t"))
+    studytime = int(input("Enter Student " + str(i + 1) + " studytime:\t"))
+    absences = int(input("Enter Student " + str(i + 1) + " absences:\t"))
+    G1 = int(input("Enter Student " + str(i + 1) + " first grade:\t"))
+    G2 = int(input("Enter Student " + str(i + 1) + " second grade:\t"))
+    temp = [['age', age], ['health', health], ['freetime', freetime], ['studytime', studytime], ['absences', absences], ['G1', G1], ['G2', G2] ]
+    #students = students.append(temp)
+    arr = np.array([[age], [health], [freetime], [studytime], [absences], [G1], [G2]])
+    students[i] = arr.copy()
+    print(temp)
+
+#students = students[ "age", "health", "freetime", "studytime", "absences", "G1", "G2" ]
+print(students)
+#students_array = np.array(students)
+#print (students_array[0])
+#print (students_array.shape())
+#students.reshape(-1, 1)  
+#rounding the prediction to the nearest whole number.
+predictions = np.rint(model.predict(students))
+
+#printing the predictions against the real results
+print("X\t\t\t Y\tPrediction")
+i = 0
+for pred in predictions:
+    print ("Student " + str(i + 1) + " predicted grade:\t", pred)
+    i+=1
